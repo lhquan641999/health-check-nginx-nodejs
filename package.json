@@ -1,0 +1,13 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "My Node.js app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "build": "npm install && npm prune --production"
+  },
+  "dependencies": {
+    "http": "^0.0.0"
+  }
+}

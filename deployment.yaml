@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: quanlh0604/nginx-heathy:0.7
+        env:
+          - name: URL
+            value: "http://172.16.94.171"
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          exec:
+            command: ["/bin/sh", "-c", "./heahthy.sh"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: ["/bin/sh", "-c", "./heahthy.sh"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: my-app
+
+# local helm_values_file=${$TEST:-.abc/abc.sh}    
